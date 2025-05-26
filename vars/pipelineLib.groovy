@@ -1,20 +1,26 @@
-def buildDockerImage() {
-    echo "🔨 Building Docker image..."
-    def imageName = "hendsiam/jenkins"
-    sh "docker build -t ${imageName}:v${env.BUILD_NUMBER} ."
-}
+def call() {
+    pipeline {
+        agent any
 
-def pushDockerImage() {
-    echo "🚀 Pushing Docker image to DockerHub..."
-    def imageName = "hendsiam/jenkins"
-    withCredentials([usernamePassword(credentialsId: 'dockerhub-cred', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-        sh "echo \$DOCKER_PASSWORD | docker login -u \$DOCKER_USERNAME --password-stdin"
-        sh "docker push ${imageName}:v${env.BUILD_NUMBER}"
+        environment {
+            XYZ = 'ITI ITI ITI'
+            IMAGE_NAME = 'ayaahmed123/jenkins-library'
+        }
+
+       stages {
+        stage('Build Java & Docker') {
+            steps {
+                echo 'Building Java app and Docker image...'
+                buildJavaApp(env.IMAGE_NAME)
+            }
+        }
+
+            stage('Push Docker Image') {
+                steps {
+                    echo 'Pushing Docker image to DockerHub'
+                    pushDockerImage(env.IMAGE_NAME)
+                }
+            }
+        }
     }
 }
-
-def buildAndPushDockerImage() {
-    buildDockerImage()
-    pushDockerImage()
-}
-
