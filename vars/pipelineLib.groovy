@@ -4,7 +4,7 @@ def call() {
 
         environment {
             XYZ = 'ITI ITI ITI'
-            IMAGE_NAME = 'ayaahmed123/jenkins-library'
+            IMAGE_NAME = 'hendsiam/jenkins'
         }
 
        stages {
